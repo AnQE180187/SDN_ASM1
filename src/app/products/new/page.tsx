@@ -5,12 +5,6 @@ import { useRouter } from 'next/navigation';
 import { CldUploadWidget } from 'next-cloudinary';
 import Image from 'next/image';
 
-type CloudinaryResult = {
-  info: {
-    secure_url: string;
-  };
-};
-
 export default function NewProductPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({

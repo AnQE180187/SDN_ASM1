@@ -3,6 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CldUploadWidget } from 'next-cloudinary';
+import Image from 'next/image';
+
+type CloudinaryResult = {
+  info: {
+    secure_url: string;
+  };
+};
 
 export default function EditProductPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -114,8 +121,10 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
             </label>
             <CldUploadWidget
               uploadPreset="Assignment1"
-              onSuccess={(result: any) => {
-                setImageUrl(result.info.secure_url);
+              onSuccess={(result) => {
+                if (result.info && typeof result.info === 'object' && 'secure_url' in result.info) {
+                  setImageUrl(result.info.secure_url);
+                }
               }}
             >
               {({ open }) => {
@@ -129,11 +138,12 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                       Upload Image
                     </button>
                     {imageUrl && (
-                      <div className="mt-4">
-                        <img
+                      <div className="mt-4 relative w-48 h-48">
+                        <Image
                           src={imageUrl}
                           alt="Uploaded product"
-                          className="w-48 h-48 object-cover rounded-lg shadow-sm"
+                          fill
+                          className="object-cover rounded-lg shadow-sm"
                         />
                       </div>
                     )}
